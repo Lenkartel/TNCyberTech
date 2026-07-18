@@ -1,0 +1,593 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"/>
+<meta name="theme-color" content="#111111"/>
+<title>TN CyberTech · Loan</title>
+<link rel="icon" href="assets/tnct-icon.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+button,div,span,label{-webkit-user-select:none;user-select:none}
+input,select{-webkit-user-select:text!important;user-select:text!important}
+
+:root{
+  /* TN CyberTech — black + gold */
+  --black:#111111;--black2:#1A1A1A;--black3:#242424;
+  --gold:#C4781A;--gold2:#D4891E;--goldb:rgba(196,120,26,.15);--goldb2:rgba(196,120,26,.08);
+  --shine:#FFED8B;--shine2:rgba(255,237,139,.12);
+  /* Light surfaces */
+  --bg:#F8F6F2;--s0:#FFFFFF;--s1:#F2EFE9;--s2:#E8E4DC;
+  /* Text */
+  --t1:#1A1200;--t2:#5C4F2E;--t3:#9E8E6A;
+  /* Status */
+  --ok:#1B7A3E;--ok2:rgba(27,122,62,.09);
+  --err:#B91C1C;--err2:rgba(185,28,28,.08);
+  --div:rgba(0,0,0,.08);
+  --f:'Inter',system-ui,sans-serif;
+  --r8:8px;--r12:12px;--r16:16px;--r20:20px;--rp:999px;
+  --ease:cubic-bezier(.22,1,.36,1);--spring:cubic-bezier(.34,1.56,.64,1);
+  --sh0:0 1px 3px rgba(0,0,0,.07);
+  --sh1:0 2px 8px rgba(0,0,0,.08),0 1px 3px rgba(0,0,0,.05);
+  --sh-gold:0 4px 18px rgba(196,120,26,.22);
+}
+
+@keyframes spin    {to{transform:rotate(360deg)}}
+@keyframes rip     {to{transform:scale(4);opacity:0}}
+@keyframes fadeUp  {from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes sIn     {from{opacity:0;transform:translateX(24px)}to{opacity:1;transform:none}}
+@keyframes sBack   {from{opacity:0;transform:translateX(-24px)}to{opacity:1;transform:none}}
+@keyframes scaleIn {from{opacity:0;transform:scale(.92)}to{opacity:1;transform:scale(1)}}
+@keyframes shimmer {0%{left:-80%}100%{left:160%}}
+
+html,body{
+  font-family:var(--f);background:var(--black);color:var(--t1);
+  -webkit-font-smoothing:antialiased;
+  width:100%;height:100dvh;overflow:hidden;
+}
+
+/* ── Curtain ── */
+.curtain{position:fixed;inset:0;z-index:9999;pointer-events:none;background:var(--black);opacity:0;transition:opacity .35s var(--ease);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px}
+.curtain.show{opacity:1;pointer-events:auto}
+.c-icon{width:72px;height:72px;border-radius:18px;overflow:hidden;flex-shrink:0;box-shadow:0 8px 32px rgba(0,0,0,.5)}
+.c-icon img{width:100%;height:100%;object-fit:cover}
+.c-spin{width:24px;height:24px;border:2.5px solid rgba(196,120,26,.25);border-top-color:var(--gold);border-radius:50%;animation:spin .7s linear infinite}
+.c-lbl{font-size:13px;font-weight:600;color:rgba(255,255,255,.45)}
+
+/* ── Shell ── */
+.shell{display:flex;flex-direction:column;width:100%;height:100dvh;background:var(--bg);animation:fadeUp .25s var(--ease) both}
+
+/* ── Topbar ── */
+.topbar{flex-shrink:0;background:var(--black);padding:calc(env(safe-area-inset-top,0px)+12px) 18px 0}
+.tb-r1{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.tb-brand{display:flex;align-items:center;gap:10px}
+.tb-icon{width:36px;height:36px;border-radius:9px;overflow:hidden;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,.4)}
+.tb-icon img{width:100%;height:100%;object-fit:cover}
+.tb-wordmark img{height:22px;object-fit:contain}
+/* Badge */
+.tb-badge{background:var(--goldb);border:1px solid rgba(196,120,26,.45);border-radius:var(--rp);padding:5px 12px;text-align:right;opacity:0;pointer-events:none;transition:opacity .3s}
+.tb-badge.on{opacity:1;pointer-events:auto}
+.tb-badge-l{font-size:7.5px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.5px}
+.tb-badge-v{font-size:14px;font-weight:800;color:var(--gold);line-height:1;font-feature-settings:"tnum"}
+/* Title */
+.tb-r2{margin-bottom:10px}
+.tb-ttl{font-size:18px;font-weight:800;color:#fff;letter-spacing:-.3px}
+.tb-ttl span{color:var(--gold)}
+/* Stepper */
+.stepbar{display:flex;align-items:center;padding-bottom:13px}
+.sb-item{display:flex;flex-direction:column;align-items:center;gap:2px;flex:0 0 auto}
+.sb-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.18);transition:all .25s var(--ease);flex-shrink:0}
+.sb-dot.done{background:var(--gold)}
+.sb-dot.on{background:#fff;box-shadow:0 0 0 2.5px rgba(255,255,255,.2)}
+.sb-lbl{font-size:8.5px;font-weight:700;color:rgba(255,255,255,.28);letter-spacing:.4px;text-transform:uppercase;margin-top:2px;transition:color .25s;white-space:nowrap}
+.sb-lbl.done{color:var(--gold)}.sb-lbl.on{color:rgba(255,255,255,.8)}
+.sb-line{flex:1;height:1px;background:rgba(255,255,255,.1);margin-bottom:8px;transition:background .25s}
+.sb-line.done{background:var(--gold)}
+
+/* ── Scroll ── */
+.scroll{flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.scroll::-webkit-scrollbar{display:none}
+.scroll-inner{padding:14px 14px 6px;display:flex;flex-direction:column;gap:10px}
+
+/* ── Panes ── */
+.pane{display:none;flex-direction:column;gap:10px}
+.pane.on{display:flex;animation:sIn .22s var(--ease) both}
+.pane.back{animation:sBack .22s var(--ease) both}
+
+/* ── Promo hero ── */
+.promo{background:linear-gradient(135deg,var(--black2) 0%,var(--black3) 100%);border-radius:var(--r16);padding:18px 16px;display:flex;flex-direction:column;gap:10px;position:relative;overflow:hidden;border:1px solid rgba(196,120,26,.18)}
+.promo::before{content:'';position:absolute;top:-40px;right:-40px;width:140px;height:140px;border-radius:50%;background:radial-gradient(circle,rgba(196,120,26,.2),transparent 70%);pointer-events:none}
+.promo-headline{font-size:24px;font-weight:800;color:#fff;letter-spacing:-.5px;line-height:1.15}
+.promo-headline span{color:var(--gold)}
+.promo-features{display:flex;flex-direction:column;gap:6px}
+.promo-feat{display:flex;align-items:center;gap:8px;font-size:13px;color:rgba(255,255,255,.65)}
+.promo-feat-dot{width:5px;height:5px;border-radius:50%;background:var(--gold);flex-shrink:0}
+.promo-feat strong{color:rgba(255,255,255,.9);font-weight:600}
+
+/* ── Cards ── */
+.card{background:var(--s0);border-radius:var(--r16);box-shadow:var(--sh1);overflow:hidden}
+.slbl{font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.7px;margin-bottom:5px}
+
+/* ── Account choice tiles ── */
+.choice-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.choice-tile{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:16px 10px;border-radius:var(--r16);border:2px solid var(--div);background:var(--s0);cursor:pointer;touch-action:manipulation;transition:border-color .18s,background .18s,transform .12s var(--spring);box-shadow:var(--sh0)}
+.choice-tile:active{transform:scale(.96)}
+.choice-tile.on{border-color:var(--gold);background:var(--goldb2)}
+.choice-tile.err{border-color:var(--err);background:var(--err2)}
+.choice-tile-icon{font-size:28px;line-height:1}
+.choice-tile-lbl{font-size:14px;font-weight:700;color:var(--t1)}
+.choice-tile.on .choice-tile-lbl{color:var(--gold)}
+.choice-tile-sub{font-size:10px;color:var(--t3);text-align:center;line-height:1.3}
+.choice-check{width:18px;height:18px;border-radius:50%;border:2px solid var(--div);background:var(--s1);display:flex;align-items:center;justify-content:center;margin-top:2px;transition:all .18s}
+.choice-tile.on .choice-check{border-color:var(--gold);background:var(--gold)}
+.choice-tile.err .choice-check{border-color:var(--err);background:var(--err)}
+.choice-check svg{width:9px;height:9px;stroke:#fff;fill:none;stroke-width:3;stroke-linecap:round;display:none}
+.choice-tile.on .choice-check svg,.choice-tile.err .choice-check svg{display:block}
+
+/* No account card */
+.no-acct-card{background:var(--s0);border-radius:var(--r16);box-shadow:var(--sh1);overflow:hidden;display:none;animation:scaleIn .2s var(--ease) both}
+.no-acct-card.on{display:block}
+.no-acct-top{background:var(--err2);border-bottom:1px solid rgba(185,28,28,.12);padding:16px;display:flex;align-items:flex-start;gap:12px}
+.no-acct-ic{font-size:26px;line-height:1;flex-shrink:0;margin-top:2px}
+.no-acct-title{font-size:14px;font-weight:700;color:var(--err);margin-bottom:3px}
+.no-acct-msg{font-size:12px;color:var(--t2);line-height:1.55}
+.no-acct-body{padding:14px 16px;display:flex;flex-direction:column;gap:8px}
+.no-acct-body-t{font-size:11px;font-weight:700;color:var(--t2);text-transform:uppercase;letter-spacing:.4px;margin-bottom:2px}
+.branch-row{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--s1);border-radius:var(--r12);border:1px solid var(--div)}
+.branch-icon{font-size:20px;flex-shrink:0;line-height:1}
+.branch-info-t{font-size:13px;font-weight:600;color:var(--t1)}
+.branch-info-s{font-size:11px;color:var(--t3);margin-top:1px}
+.branch-cta{width:100%;padding:12px;border-radius:var(--r12);border:none;background:linear-gradient(135deg,var(--gold2),var(--gold));color:#fff;font-family:var(--f);font-size:14px;font-weight:700;cursor:pointer;touch-action:manipulation;display:flex;align-items:center;justify-content:center;gap:7px;box-shadow:var(--sh-gold)}
+.branch-cta:active{opacity:.85}
+
+/* ── Form fields ── */
+.fg{display:flex;flex-direction:column;gap:4px;padding:0 14px}
+.fg+.fg{margin-top:10px}
+.fg:first-child{padding-top:14px}
+.fg.last{padding-bottom:14px}
+.fl{font-size:11.5px;font-weight:600;color:var(--t2)}
+.fl em{color:var(--err);font-style:normal;margin-left:2px}
+.finput{width:100%;padding:12px 13px;border-radius:11px;border:1.5px solid var(--div);background:var(--s1);font-family:var(--f);font-size:15px;font-weight:500;color:var(--t1);outline:none;transition:border-color .18s,box-shadow .18s,background .18s}
+.finput:focus{border-color:var(--gold);background:var(--s0);box-shadow:0 0 0 3px var(--goldb)}
+.finput.ok{border-color:var(--ok);background:var(--s0)}
+.finput.err{border-color:var(--err);box-shadow:0 0 0 3px var(--err2)}
+.finput::placeholder{color:var(--t3)}
+.fsel{width:100%;padding:12px 13px;border-radius:11px;border:1.5px solid var(--div);background:var(--s1);font-family:var(--f);font-size:15px;font-weight:500;color:var(--t1);outline:none;cursor:pointer;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='11' viewBox='0 0 24 24' fill='none' stroke='%239E8E6A' stroke-width='2.5' stroke-linecap='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 13px center;padding-right:34px;transition:border-color .18s}
+.fsel:focus{border-color:var(--gold);background-color:var(--s0);box-shadow:0 0 0 3px var(--goldb);outline:none}
+.fst{display:flex;align-items:center;gap:5px;font-size:11px;font-weight:500;min-height:13px;color:var(--t3);margin-top:2px;transition:color .18s}
+.fst.ok{color:var(--ok)}.fst.err{color:var(--err)}
+.fst svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2.5;stroke-linecap:round;flex-shrink:0}
+.card-div{height:1px;background:var(--div);margin:0 14px}
+
+/* ── Eligibility result ── */
+.elig{display:none;flex-direction:column;gap:5px;background:var(--goldb2);border-top:1px solid rgba(196,120,26,.15);padding:13px 14px;animation:fadeUp .2s var(--ease) both}
+.elig.on{display:flex}
+.elig-tag{font-size:9px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.7px}
+.elig-h{font-size:18px;font-weight:800;color:var(--t1);letter-spacing:-.4px;line-height:1.2}
+.elig-h span{color:var(--gold)}
+.elig-s{font-size:12px;color:var(--t2);line-height:1.5;margin-top:1px}
+.elig-chips{display:flex;gap:5px;flex-wrap:wrap;margin-top:4px}
+.echip{padding:4px 9px;border-radius:var(--rp);font-size:10px;font-weight:700;background:var(--goldb);color:var(--gold)}
+
+/* ── Loan amount ── */
+.amt-block{padding:18px 14px 10px;text-align:center;background:linear-gradient(180deg,var(--black) 0%,var(--black2) 100%)}
+.amt-cur-lbl{font-size:12px;font-weight:600;color:rgba(255,255,255,.4);margin-bottom:2px}
+.amt-num{font-size:48px;font-weight:800;color:var(--gold);letter-spacing:-.05em;font-feature-settings:"tnum";line-height:1;text-shadow:0 0 40px rgba(196,120,26,.4)}
+.amt-hint{font-size:11px;color:rgba(255,255,255,.35);margin-top:4px}
+.range-wrap{padding:6px 14px 4px;background:var(--black2)}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:5px;border-radius:3px;outline:none;cursor:pointer;background:linear-gradient(to right,var(--gold) 0%,var(--gold) var(--pct,0%),#333 var(--pct,0%),#333 100%)}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:22px;height:22px;border-radius:50%;background:var(--gold);border:3px solid var(--black);box-shadow:0 2px 8px rgba(196,120,26,.4);cursor:pointer;transition:transform .12s var(--spring)}
+input[type=range]:active::-webkit-slider-thumb{transform:scale(1.2)}
+input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:var(--gold);border:3px solid var(--black);cursor:pointer}
+.range-ends{display:flex;justify-content:space-between;padding:0 14px;margin-bottom:0;font-size:11px;font-weight:600;color:rgba(255,255,255,.35);background:var(--black2)}
+/* Tenure */
+.tenure-wrap{padding:10px 14px 14px;background:var(--black2)}
+.tenure-lbl{font-size:10px;font-weight:700;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.7px;margin-bottom:7px}
+.tenure-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:5px}
+.tchip{display:flex;flex-direction:column;align-items:center;padding:7px 3px;border-radius:10px;border:1.5px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);cursor:pointer;touch-action:manipulation;outline:none;transition:all .15s;position:relative}
+.tchip-n{font-size:13px;font-weight:700;color:rgba(255,255,255,.5)}
+.tchip-u{font-size:8px;font-weight:600;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.3px;margin-top:1px}
+.tchip.on{background:var(--gold);border-color:var(--gold)}
+.tchip.on .tchip-n,.tchip.on .tchip-u{color:#fff}
+.tchip-badge{position:absolute;top:-7px;right:-3px;background:var(--shine);border:2px solid var(--black2);border-radius:var(--rp);padding:1px 5px;font-size:7px;font-weight:800;color:var(--black);white-space:nowrap}
+/* Repayment */
+.repay-block{background:rgba(196,120,26,.1);border-top:1px solid rgba(196,120,26,.15);padding:11px 14px;display:flex;align-items:center;justify-content:space-between}
+.rb-lbl{font-size:11.5px;color:rgba(255,255,255,.55);font-weight:500}
+.rb-sub{font-size:9.5px;color:rgba(255,255,255,.3);margin-top:1px}
+.rb-amt{font-size:18px;font-weight:800;color:var(--gold);font-feature-settings:"tnum"}
+
+/* ── Phone ── */
+.phone-row{display:flex;align-items:center;padding:0 13px;border-radius:11px;border:1.5px solid var(--div);background:var(--s1);cursor:pointer;transition:border-color .18s,box-shadow .18s,background .18s}
+.phone-row.foc{border-color:var(--gold);background:var(--s0);box-shadow:0 0 0 3px var(--goldb)}
+.phone-row.ok{border-color:var(--ok);background:var(--s0)}
+.phone-row.err{border-color:var(--err);box-shadow:0 0 0 3px var(--err2)}
+.ph-pre{display:flex;align-items:center;gap:5px;padding:11px 10px 11px 0;border-right:1.5px solid var(--div);margin-right:10px;flex-shrink:0}
+.ph-fl{font-size:16px;line-height:1}
+.ph-cd{font-size:12px;font-weight:600;color:var(--t2)}
+.ph-v{flex:1;font-size:15px;font-weight:600;color:var(--t1);padding:11px 0;min-width:0;font-family:var(--f);letter-spacing:.3px}
+.ph-v.ph{color:var(--t3);font-weight:400;font-size:14px}
+.ph-x{display:none;width:26px;height:26px;border:none;background:var(--s2);cursor:pointer;border-radius:50%;align-items:center;justify-content:center;flex-shrink:0}
+.ph-x.on{display:flex}
+.ph-x svg{width:10px;height:10px;stroke:var(--t3);fill:none;stroke-width:2.5;stroke-linecap:round}
+
+/* ── Inline confirm panel ── */
+.conf-panel{display:none;background:var(--black);border-radius:12px;padding:13px 14px;margin-top:7px;flex-direction:column;gap:9px;animation:fadeUp .18s var(--ease) both;border:1px solid rgba(196,120,26,.2)}
+.conf-panel.on{display:flex}
+.conf-q{font-size:11px;color:rgba(255,255,255,.5);font-weight:500}
+.conf-v{font-size:16px;font-weight:700;color:var(--gold);letter-spacing:.6px}
+.conf-btns{display:flex;gap:7px}
+.conf-btn{flex:1;padding:10px;border-radius:9px;border:none;font-family:var(--f);font-size:13px;font-weight:700;cursor:pointer;touch-action:manipulation;transition:transform .1s}
+.conf-btn:active{transform:scale(.95)}
+.conf-btn.y{background:linear-gradient(135deg,var(--gold2),var(--gold));color:#fff;box-shadow:var(--sh-gold)}
+.conf-btn.n{background:rgba(255,255,255,.08);color:rgba(255,255,255,.7)}
+
+/* ── Action bar ── */
+.actbar{flex-shrink:0;background:var(--s0);border-top:1px solid var(--div);padding:10px 14px max(16px,env(safe-area-inset-bottom));display:flex;gap:8px;box-shadow:0 -2px 12px rgba(0,0,0,.05)}
+.btn-back{width:44px;height:44px;border-radius:11px;border:1.5px solid var(--div);background:var(--s1);cursor:pointer;touch-action:manipulation;display:none;align-items:center;justify-content:center;flex-shrink:0}
+.btn-back.on{display:flex}
+.btn-back svg{width:18px;height:18px;stroke:var(--gold);fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.btn-main{flex:1;height:44px;border-radius:11px;border:none;background:linear-gradient(135deg,var(--gold2),var(--gold));color:#fff;font-family:var(--f);font-size:15px;font-weight:700;cursor:pointer;touch-action:manipulation;outline:none;position:relative;overflow:hidden;box-shadow:var(--sh-gold);transition:transform .13s var(--spring),opacity .18s}
+.btn-main:active{transform:scale(.97)}
+.btn-main:disabled{opacity:.35;box-shadow:none;cursor:default;transform:none}
+.btn-main::before{content:'';position:absolute;top:0;left:-80%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.15),transparent);animation:shimmer 2.5s ease-in-out infinite;pointer-events:none}
+.btn-main:disabled::before{display:none}
+.rip{position:absolute;border-radius:50%;pointer-events:none;background:rgba(255,255,255,.25);transform:scale(0);animation:rip .5s ease forwards}
+
+/* ── Banking keyboard ── */
+.kb-bd{position:fixed;inset:0;z-index:400;background:rgba(0,0,0,.55);display:none;backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px)}
+.kb-bd.on{display:block}
+.kb{position:fixed;bottom:0;left:0;right:0;z-index:401;background:var(--s0);border-radius:20px 20px 0 0;border-top:1px solid var(--div);padding:0 13px max(18px,env(safe-area-inset-bottom));box-shadow:0 -8px 30px rgba(0,0,0,.1);transform:translateY(100%);transition:transform .24s var(--ease)}
+.kb.on{transform:translateY(0)}
+.kb-drag{width:30px;height:3px;background:var(--s2);border-radius:2px;margin:9px auto 9px}
+.kb-ttl{font-size:12px;font-weight:600;color:var(--t2);text-align:center;margin-bottom:9px}
+.kb-disp{display:flex;align-items:center;background:var(--s1);border:1.5px solid var(--div);border-radius:11px;margin-bottom:9px;overflow:hidden}
+.kb-pre{display:flex;align-items:center;gap:4px;padding:10px 10px 10px 12px;border-right:1.5px solid var(--div);flex-shrink:0}
+.kb-pre-fl{font-size:16px;line-height:1}
+.kb-pre-cd{font-size:12px;font-weight:600;color:var(--t2)}
+.kb-num{flex:1;font-size:19px;font-weight:700;color:var(--t1);padding:10px 9px;min-width:0;font-family:var(--f);letter-spacing:.3px}
+.kb-num.ph{color:var(--t3);font-size:13px;font-weight:400}
+.kb-bk{width:42px;height:42px;border:none;background:transparent;display:flex;align-items:center;justify-content:center;cursor:pointer;touch-action:manipulation;flex-shrink:0}
+.kb-bk:active{background:var(--s1);border-radius:50%}
+.kb-bk svg{width:17px;height:17px;stroke:var(--t2);fill:none;stroke-width:2;stroke-linecap:round}
+.kb-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.kk{height:50px;border-radius:12px;border:none;background:var(--s1);font-size:20px;font-weight:700;color:var(--t1);display:flex;align-items:center;justify-content:center;cursor:pointer;touch-action:manipulation;outline:none;position:relative;overflow:hidden;transition:background .1s,transform .08s;box-shadow:0 1px 2px rgba(0,0,0,.05)}
+.kk:active{background:var(--s2);transform:scale(.93)}
+.kk.ghost{background:transparent;box-shadow:none;pointer-events:none}
+.kk.clr{font-size:11px;font-weight:700;color:var(--err);background:var(--err2)}
+</style>
+</head>
+<body>
+
+<div class="curtain" id="curtain">
+  <div class="c-icon"><img src="assets/tnct-icon.webp" alt="TNCT"></div>
+  <div class="c-spin"></div>
+  <div class="c-lbl" id="cLbl">Processing…</div>
+</div>
+
+<div class="shell">
+  <div class="topbar">
+    <div class="tb-r1">
+      <div class="tb-brand">
+        <div class="tb-icon"><img src="assets/tnct-icon.webp" alt="TNCT"></div>
+        <div class="tb-wordmark"><img src="assets/tnct-logo.png" alt="TN CyberTech Bank Limited"></div>
+      </div>
+      <div class="tb-badge" id="tbBadge">
+        <div class="tb-badge-l">Loan</div>
+        <div class="tb-badge-v" id="badgeAmt">$500</div>
+      </div>
+    </div>
+    <div class="tb-r2"><div class="tb-ttl" id="tbTtl">Apply for a <span>Soft Loan</span></div></div>
+    <div class="stepbar">
+      <div class="sb-item"><div class="sb-dot on" id="sd0"></div><div class="sb-lbl on" id="sl0">Eligibility</div></div>
+      <div class="sb-line" id="sln0"></div>
+      <div class="sb-item"><div class="sb-dot" id="sd1"></div><div class="sb-lbl" id="sl1">Loan</div></div>
+      <div class="sb-line" id="sln1"></div>
+      <div class="sb-item"><div class="sb-dot" id="sd2"></div><div class="sb-lbl" id="sl2">Details</div></div>
+    </div>
+  </div>
+
+  <div class="scroll" id="scrollArea">
+    <div class="scroll-inner">
+
+      <!-- PANE 0 · Eligibility -->
+      <div class="pane on" id="p0">
+        <div class="promo">
+          <div class="promo-headline">Up to <span>$50,000</span><br>in your account</div>
+          <div class="promo-features">
+            <div class="promo-feat"><div class="promo-feat-dot"></div><span>Repay over <strong>up to 60 months</strong></span></div>
+            <div class="promo-feat"><div class="promo-feat-dot"></div><span>Open to <strong>Employed &amp; Self-employed</strong></span></div>
+            <div class="promo-feat"><div class="promo-feat-dot"></div><span>Applied <strong>digitally in minutes</strong></span></div>
+          </div>
+        </div>
+        <div>
+          <div class="slbl">Do you have a TN CyberTech Bank account?</div>
+          <div class="choice-row">
+            <button class="choice-tile" id="tileYes" onclick="selectAcct(true)">
+              <div class="choice-tile-icon">🏦</div>
+              <div class="choice-tile-lbl">Yes, I do</div>
+              <div class="choice-tile-sub">I bank with TNCT</div>
+              <div class="choice-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+            </button>
+            <button class="choice-tile" id="tileNo" onclick="selectAcct(false)">
+              <div class="choice-tile-icon">🏧</div>
+              <div class="choice-tile-lbl">No, not yet</div>
+              <div class="choice-tile-sub">I don't have one</div>
+              <div class="choice-check"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></div>
+            </button>
+          </div>
+        </div>
+        <div class="no-acct-card" id="noAcctCard">
+          <div class="no-acct-top">
+            <div class="no-acct-ic">🏦</div>
+            <div>
+              <div class="no-acct-title">TNCT Account Required</div>
+              <div class="no-acct-msg">You need an active TN CyberTech Bank account to qualify for this loan. Open one at any branch and come back to apply.</div>
+            </div>
+          </div>
+          <div class="no-acct-body">
+            <div class="no-acct-body-t">Visit your nearest branch:</div>
+            <div class="branch-row"><div class="branch-icon">📍</div><div><div class="branch-info-t">Find a Branch Near You</div><div class="branch-info-s">Bring your National ID &amp; proof of income</div></div></div>
+            <div class="branch-row"><div class="branch-icon">📞</div><div><div class="branch-info-t">Call TNCT Customer Care</div><div class="branch-info-s">Mon – Fri · 08:00 – 17:00</div></div></div>
+            <button class="branch-cta" onclick="void 0"><span>📞</span> Call to Open an Account</button>
+          </div>
+        </div>
+        <div id="eligFields" style="display:none">
+          <div class="slbl">Your Eligibility</div>
+          <div class="card">
+            <div class="fg" style="padding-top:14px">
+              <div class="fl">Employment Status<em>*</em></div>
+              <select class="fsel" id="empType"><option value="">Select status…</option><option value="employed">Employed (Salaried)</option><option value="self">Self-Employed</option></select>
+              <div class="fst" id="empSt"></div>
+            </div>
+            <div class="card-div"></div>
+            <div class="fg last" style="padding-top:10px">
+              <div class="fl">Monthly Net Income (USD)<em>*</em></div>
+              <input class="finput" type="number" inputmode="decimal" id="income" placeholder="e.g. 1,200" min="100" max="200000" step="1">
+              <div class="fst" id="incSt">Minimum $100 / month to qualify</div>
+            </div>
+            <div class="elig" id="eligBox">
+              <div class="elig-tag">✓ Eligible</div>
+              <div class="elig-h">You qualify for up to <span id="eligAmt">$0</span></div>
+              <div class="elig-s" id="eligSub"></div>
+              <div class="elig-chips" id="eligChips"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PANE 1 · Loan Setup -->
+      <div class="pane" id="p1">
+        <div class="slbl">Choose Your Loan Amount</div>
+        <div class="card" style="overflow:hidden">
+          <div class="amt-block">
+            <div class="amt-cur-lbl">USD</div>
+            <div class="amt-num" id="amtVal">500</div>
+            <div class="amt-hint" id="amtHint">Slide to adjust</div>
+          </div>
+          <div class="range-wrap"><input type="range" id="loanSlider" min="500" max="50000" step="50" value="500"></div>
+          <div class="range-ends"><span>$500</span><span id="slMax">$50,000</span></div>
+          <div class="tenure-wrap">
+            <div class="tenure-lbl">Repayment Period</div>
+            <div class="tenure-grid">
+              <button class="tchip on" data-m="6"><div class="tchip-n">6</div><div class="tchip-u">Mo</div></button>
+              <button class="tchip" data-m="12"><div class="tchip-n">12</div><div class="tchip-u">Mo</div></button>
+              <button class="tchip" data-m="24"><div class="tchip-n">24</div><div class="tchip-u">Mo</div></button>
+              <button class="tchip" data-m="36"><div class="tchip-n">36</div><div class="tchip-u">Mo</div></button>
+              <button class="tchip" data-m="60"><div class="tchip-n">60</div><div class="tchip-u">Mo</div><div class="tchip-badge">Max</div></button>
+            </div>
+          </div>
+          <div class="repay-block">
+            <div><div class="rb-lbl">Monthly Repayment</div><div class="rb-sub">at 2% p.m. flat rate</div></div>
+            <div class="rb-amt" id="repayAmt">USD 103.33</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PANE 2 · Personal Details -->
+      <div class="pane" id="p2">
+        <div class="slbl">Personal Details</div>
+        <div class="card">
+          <div class="fg" style="padding-top:14px">
+            <div class="fl">Full Names<em>*</em></div>
+            <input class="finput" type="text" id="fullName" placeholder="First and last name" autocomplete="name" autocapitalize="words">
+            <div class="fst" id="nameSt"></div>
+          </div>
+          <div class="card-div"></div>
+          <div class="fg" style="padding-top:10px">
+            <div class="fl">Date of Birth<em>*</em></div>
+            <input class="finput" type="date" id="dob" max="" style="color:var(--t1)">
+            <div class="fst" id="dobSt">Must be 18 or older</div>
+          </div>
+          <div class="card-div"></div>
+          <div class="fg" style="padding-top:10px">
+            <div class="fl">Mobile Number<em>*</em></div>
+            <div class="phone-row" id="phoneCard" onclick="kbOpen()">
+              <div class="ph-pre"><span class="ph-fl">🇿🇼</span><span class="ph-cd">+263</span></div>
+              <div class="ph-v ph" id="phVal">7XXXXXXXX</div>
+              <button class="ph-x" id="phX" onclick="event.stopPropagation();clearPhone()">
+                <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              </button>
+            </div>
+            <div class="fst" id="phoneSt">Accepts 077 · 078 · 073 · 071</div>
+            <div class="conf-panel" id="phonePanel">
+              <div class="conf-q">Is +263<span id="phonePanelNum"></span> your TNCT-registered number?</div>
+              <div class="conf-v" id="phonePanelDisp"></div>
+              <div class="conf-btns">
+                <button class="conf-btn y" id="phoneYes">✓ Yes, That's Mine</button>
+                <button class="conf-btn n" id="phoneNo">✎ Re-enter</button>
+              </div>
+            </div>
+          </div>
+          <div class="card-div"></div>
+          <div class="fg last" style="padding-top:10px">
+            <div class="fl">National ID Number<em>*</em></div>
+            <input class="finput" id="nidIn" type="text" placeholder="e.g. 63-123456A-75" autocomplete="off" autocorrect="off" spellcheck="false" style="text-transform:uppercase;letter-spacing:.5px" maxlength="16">
+            <div class="fst" id="nidSt">Format: XX-NNNNNN(N)-L-DD · 11 chars</div>
+            <div class="conf-panel" id="nidPanel">
+              <div class="conf-q">Please confirm your National ID:</div>
+              <div class="conf-v" id="nidPanelVal"></div>
+              <div class="conf-btns">
+                <button class="conf-btn y" id="nidYes">✓ Yes, Correct</button>
+                <button class="conf-btn n" id="nidNo">✎ Edit</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="actbar">
+    <button class="btn-back" id="btnBack" onclick="goBack()"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
+    <button class="btn-main" id="btnMain" disabled>Check Eligibility</button>
+  </div>
+</div>
+
+<div class="kb-bd" id="kbBd" onclick="kbClose()"></div>
+<div class="kb" id="kb">
+  <div class="kb-drag"></div>
+  <div class="kb-ttl">Enter Mobile Number</div>
+  <div class="kb-disp">
+    <div class="kb-pre"><span class="kb-pre-fl">🇿🇼</span><span class="kb-pre-cd">+263</span></div>
+    <div class="kb-num ph" id="kbNum">7XXXXXXXX</div>
+    <button class="kb-bk" id="kbBk"><svg viewBox="0 0 24 24"><path d="M21 4H8l-7 8 7 8h13a2 2 0 002-2V6a2 2 0 00-2-2z"/><line x1="18" y1="9" x2="12" y2="15"/><line x1="12" y1="9" x2="18" y2="15"/></svg></button>
+  </div>
+  <div class="kb-grid">
+    <button class="kk" data-d="1">1</button><button class="kk" data-d="2">2</button><button class="kk" data-d="3">3</button>
+    <button class="kk" data-d="4">4</button><button class="kk" data-d="5">5</button><button class="kk" data-d="6">6</button>
+    <button class="kk" data-d="7">7</button><button class="kk" data-d="8">8</button><button class="kk" data-d="9">9</button>
+    <button class="kk clr" id="kbClr">CLR</button><button class="kk" data-d="0">0</button><button class="kk ghost"></button>
+  </div>
+</div>
+
+<script>
+'use strict';
+(function(){var h=0;if(window.screen&&screen.availTop>0)h=screen.availTop;else if(window.visualViewport&&visualViewport.offsetTop>0)h=visualViewport.offsetTop;if(h)document.documentElement.style.setProperty('--st',h+'px');})();
+function hap(t){if(!navigator.vibrate)return;try{navigator.vibrate(t);}catch(e){}}
+var RATE=0.02,loanAmt=500,tenure=6;
+function repay(a,m){return Math.round((a*(1+RATE*m))/m*100)/100;}
+function fmt2(n){return n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});}
+function fmtU(n){return '$'+n.toLocaleString('en-US');}
+function slFill(){var sl=document.getElementById('loanSlider');var mn=+sl.min||500,mx=+sl.max||50000;sl.style.setProperty('--pct',mx>mn?((loanAmt-mn)/(mx-mn)*100).toFixed(1)+'%':'0%');}
+function updateLoan(){document.getElementById('amtVal').textContent=loanAmt.toLocaleString();document.getElementById('badgeAmt').textContent=fmtU(loanAmt);document.getElementById('repayAmt').textContent='USD '+fmt2(repay(loanAmt,tenure));slFill();}
+document.getElementById('loanSlider').addEventListener('input',function(){loanAmt=Math.round(+this.value/50)*50;this.value=loanAmt;updateLoan();hap(3);});
+document.querySelectorAll('.tchip').forEach(function(c){c.addEventListener('click',function(){tenure=+c.dataset.m;document.querySelectorAll('.tchip').forEach(function(x){x.classList.remove('on');});c.classList.add('on');updateLoan();hap(8);});});
+var hasAcct=null;
+function incLimit(){var v=+document.getElementById('income').value||0;return v<100?0:Math.min(Math.max(Math.floor(v*5/50)*50,500),50000);}
+function selectAcct(yes){
+  hasAcct=yes;hap(10);
+  document.getElementById('tileYes').className='choice-tile'+(yes?' on':'');
+  document.getElementById('tileNo').className='choice-tile'+(!yes?' err':'');
+  document.getElementById('noAcctCard').className='no-acct-card'+(!yes?' on':'');
+  document.getElementById('eligFields').style.display=yes?'':'none';
+  if(!yes){document.getElementById('eligBox').className='elig';document.getElementById('btnMain').disabled=true;document.getElementById('btnMain').textContent='Check Eligibility';}
+  else runElig();
+  setTimeout(function(){var sc=document.getElementById('scrollArea');sc.scrollTo({top:sc.scrollHeight,behavior:'smooth'});},100);
+}
+function runElig(){
+  if(!hasAcct){document.getElementById('eligBox').className='elig';document.getElementById('btnMain').disabled=true;return;}
+  var inc=+document.getElementById('income').value||0,emp=document.getElementById('empType').value,box=document.getElementById('eligBox');
+  if(!emp||inc<100){box.className='elig';document.getElementById('btnMain').disabled=true;return;}
+  var lim=incLimit();
+  document.getElementById('eligAmt').textContent=fmtU(lim);
+  document.getElementById('eligSub').textContent='Income '+fmtU(inc)+'/mo · '+(emp==='employed'?'Salaried':'Self-employed')+' · Repayment from USD '+fmt2(repay(500,tenure))+'/mo';
+  document.getElementById('eligChips').innerHTML='<span class="echip">✓ TNCT Account</span><span class="echip">Max '+fmtU(lim)+'</span><span class="echip">Up to 60 months</span>';
+  box.className='elig on';
+  document.getElementById('btnMain').disabled=false;
+}
+document.getElementById('income').addEventListener('input',function(){var v=+this.value,ok=v>=100;fst('incSt',this.value?ok:null,ok?'Qualifies for up to '+fmtU(incLimit()):'Min $100/month','Min $100/month');inp(this,this.value?ok:null);runElig();});
+document.getElementById('empType').addEventListener('change',function(){fst('empSt',this.value?true:null,this.value==='employed'?'Salaried — payslip required':'Self-employed — bank statement required','');runElig();});
+var step=0;
+var TTLS=['Apply for a <span>Soft Loan</span>','Choose Your <span>Loan</span>','Your <span>Details</span>'];
+function setStep(s,dir){
+  var old=document.getElementById('p'+step);old.classList.remove('on','back');old.style.display='none';
+  step=s;var nw=document.getElementById('p'+s);nw.style.display='flex';nw.classList.remove('on','back');void nw.offsetWidth;nw.classList.add(dir==='back'?'back':'on');
+  [0,1,2].forEach(function(i){document.getElementById('sd'+i).className='sb-dot'+(i<s?' done':i===s?' on':'');document.getElementById('sl'+i).className='sb-lbl'+(i<s?' done':i===s?' on':'');});
+  [0,1].forEach(function(i){document.getElementById('sln'+i).className='sb-line'+(i<s?' done':'');});
+  document.getElementById('tbTtl').innerHTML=TTLS[s];
+  document.getElementById('tbBadge').classList.toggle('on',s>=1);
+  var bk=document.getElementById('btnBack');bk.classList.toggle('on',s>0);
+  var mb=document.getElementById('btnMain');
+  if(s===0){mb.textContent='Check Eligibility';mb.disabled=!(hasAcct&&document.getElementById('empType').value&&(+document.getElementById('income').value||0)>=100);}
+  else if(s===1){mb.textContent='Continue to Details';mb.disabled=false;}
+  else{mb.textContent='Submit Application';mb.disabled=!p2OK();}
+  document.getElementById('scrollArea').scrollTop=0;
+}
+function goBack(){if(step>0)setStep(step-1,'back');}
+document.getElementById('btnMain').addEventListener('click',function(){
+  if(this.disabled)return;
+  if(step===0){
+    var lim=incLimit(),sl=document.getElementById('loanSlider');
+    sl.max=lim;sl.min=500;loanAmt=lim;sl.value=lim;tenure=60;
+    document.querySelectorAll('.tchip').forEach(function(c){c.classList.toggle('on',c.dataset.m==='60');});
+    document.getElementById('slMax').textContent=fmtU(lim);
+    document.getElementById('amtHint').textContent='Max '+fmtU(lim)+' · adjust below';
+    updateLoan();setStep(1,'fwd');
+  }else if(step===1){setStep(2,'fwd');}
+  else doSubmit();
+});
+document.getElementById('btnMain').addEventListener('pointerdown',function(e){
+  var r=this.getBoundingClientRect(),sz=Math.max(r.width,r.height)*2;
+  var rip=document.createElement('span');rip.className='rip';rip.style.cssText='width:'+sz+'px;height:'+sz+'px;left:'+(e.clientX-r.left-sz/2)+'px;top:'+(e.clientY-r.top-sz/2)+'px';
+  this.appendChild(rip);rip.addEventListener('animationend',function(){rip.remove();});
+},{passive:true});
+function fst(id,ok,y,n){var el=document.getElementById(id);if(!el)return;if(ok===null){el.className='fst';el.innerHTML=y?'<span>'+y+'</span>':'';}else if(ok){el.className='fst ok';el.innerHTML='<svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg><span>'+y+'</span>';}else{el.className='fst err';el.innerHTML='<svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg><span>'+n+'</span>';}}
+function inp(el,ok){el.classList.remove('ok','err');if(ok===true)el.classList.add('ok');else if(ok===false)el.classList.add('err');}
+var NETS=['071','077','078','073'],pDigs='',pOK=false,nOK=false,nRaw='';
+function p2OK(){var n=document.getElementById('fullName').value.trim();return n.length>=3&&/\s/.test(n)&&/^[A-Za-z\s\-'.]+$/.test(n)&&dobValid()&&pOK&&nOK;}
+function dobValid(){var v=document.getElementById('dob').value;if(!v)return false;var d=new Date(v),now=new Date();var age=now.getFullYear()-d.getFullYear()-((now.getMonth()<d.getMonth()||(now.getMonth()===d.getMonth()&&now.getDate()<d.getDate()))?1:0);return age>=18&&age<=75;}
+function chk2(){if(step===2)document.getElementById('btnMain').disabled=!p2OK();}
+document.getElementById('fullName').addEventListener('input',function(){var v=this.value.trim(),ok=v.length>=3&&/\s/.test(v)&&/^[A-Za-z\s\-'.]+$/.test(v);fst('nameSt',v?ok:null,'Full name accepted','First and last name required');inp(this,v?ok:null);chk2();});
+(function(){document.getElementById('dob').max=new Date().toISOString().split('T')[0];})();
+document.getElementById('dob').addEventListener('change',function(){var ok=dobValid();if(!this.value){fst('dobSt',null,'Must be 18 or older','');inp(this,null);}else if(ok){fst('dobSt',true,'Age verified','');inp(this,true);}else{var d=new Date(this.value),now=new Date(),age=now.getFullYear()-d.getFullYear()-((now.getMonth()<d.getMonth()||(now.getMonth()===d.getMonth()&&now.getDate()<d.getDate()))?1:0);fst('dobSt',false,'',age<18?'Must be at least 18':'Maximum age is 75');inp(this,false);}chk2();});
+function kbOpen(){if(document.getElementById('phonePanel').classList.contains('on')||pOK)return;document.getElementById('kbBd').classList.add('on');document.getElementById('kb').classList.add('on');document.getElementById('phoneCard').classList.add('foc');kbRefresh();}
+function kbClose(){document.getElementById('kb').classList.remove('on');document.getElementById('kbBd').classList.remove('on');if(!pOK)document.getElementById('phoneCard').classList.remove('foc');}
+function kbRefresh(){var kn=document.getElementById('kbNum');kn.textContent=pDigs||'7XXXXXXXX';kn.className='kb-num'+(pDigs?'':' ph');var pv=document.getElementById('phVal');pv.textContent=pDigs||'7XXXXXXXX';pv.className=pDigs?'ph-v':'ph-v ph';document.getElementById('phX').classList.toggle('on',pDigs.length>0);}
+function kbPush(d){
+  if(pDigs.length>=9||pOK)return;
+  if(!pDigs.length&&d!=='7'){var kn=document.getElementById('kbNum');kn.style.color='var(--err)';setTimeout(function(){kn.style.color='';},450);return;}
+  pDigs+=d;hap(8);kbRefresh();
+  if(pDigs.length===9){var m='0'+pDigs;if(NETS.some(function(p){return m.startsWith(p);})){kbClose();document.getElementById('phonePanelNum').textContent=pDigs;document.getElementById('phonePanelDisp').textContent='+263 '+pDigs.slice(0,2)+' '+pDigs.slice(2,5)+' '+pDigs.slice(5);document.getElementById('phonePanel').className='conf-panel on';fst('phoneSt',null,'Is this your TNCT-registered number?','');hap(8);}else{fst('phoneSt',false,'','Unsupported network — use 077,078,073,071');document.getElementById('phoneCard').classList.add('err');hap([40,30,40]);}}
+  else{var s=document.getElementById('phoneSt');s.className='fst';s.innerHTML='<span>'+pDigs.length+' of 9 digits</span>';}
+}
+function kbDel(){if(!pDigs.length)return;if(pOK){pOK=false;document.getElementById('phoneCard').className='phone-row foc';fst('phoneSt',null,'Accepts 077 · 078 · 073 · 071','');chk2();}document.getElementById('phonePanel').className='conf-panel';pDigs=pDigs.slice(0,-1);hap(8);kbRefresh();}
+function clearPhone(){pDigs='';pOK=false;document.getElementById('phonePanel').className='conf-panel';document.getElementById('phoneCard').className='phone-row';kbRefresh();fst('phoneSt',null,'Accepts 077 · 078 · 073 · 071','');chk2();}
+document.querySelectorAll('.kk[data-d]').forEach(function(k){k.addEventListener('click',function(){kbPush(k.dataset.d);});});
+document.getElementById('kbBk').addEventListener('click',kbDel);
+document.getElementById('kbClr').addEventListener('click',function(){clearPhone();kbRefresh();});
+document.querySelectorAll('.kk:not(.ghost),.kb-bk').forEach(function(b){b.addEventListener('pointerdown',function(e){var r=b.getBoundingClientRect(),sz=Math.max(r.width,r.height)*2;var rip=document.createElement('span');rip.className='rip';rip.style.cssText='width:'+sz+'px;height:'+sz+'px;left:'+(e.clientX-r.left-sz/2)+'px;top:'+(e.clientY-r.top-sz/2)+'px';b.appendChild(rip);rip.addEventListener('animationend',function(){rip.remove();});},{passive:true});});
+document.getElementById('phoneYes').addEventListener('click',function(){pOK=true;document.getElementById('phonePanel').className='conf-panel';document.getElementById('phoneCard').className='phone-row ok';fst('phoneSt',true,'Number confirmed — registered to TNCT','');hap([10,50,10]);chk2();});
+document.getElementById('phoneNo').addEventListener('click',function(){document.getElementById('phonePanel').className='conf-panel';pDigs='';pOK=false;document.getElementById('phoneCard').className='phone-row';kbRefresh();fst('phoneSt',null,'Accepts 077 · 078 · 073 · 071','');chk2();setTimeout(kbOpen,150);});
+function nidLen(v){return v.replace(/[\s\-]/g,'').length;}
+function nidOKfn(v){var c=v.replace(/[\s\-]/g,'');return c.length>=11&&c.length<=13&&/\d/.test(c)&&/[A-Z]/i.test(c);}
+document.getElementById('nidIn').addEventListener('input',function(){
+  var v=this.value.toUpperCase();this.value=v;var rl=nidLen(v);
+  if(nOK){nOK=false;nRaw='';inp(this,null);document.getElementById('nidPanel').className='conf-panel';chk2();}
+  if(!v.length){fst('nidSt',null,'Format: XX-NNNNNN(N)-L-DD · 11 chars','');}
+  else if(rl<11){fst('nidSt',null,rl+' of 11 characters','');}
+  else if(rl>13){fst('nidSt',false,'','Too long — max 12 chars excl. dashes');inp(this,false);}
+  else if(!nidOKfn(v)){fst('nidSt',null,'Must contain digits and a letter','');}
+  else{fst('nidSt',null,'','');document.getElementById('nidPanelVal').textContent=v;document.getElementById('nidPanel').className='conf-panel on';this.blur();}
+});
+document.getElementById('nidYes').addEventListener('click',function(){var v=document.getElementById('nidIn').value.trim().toUpperCase();nOK=true;nRaw=v;document.getElementById('nidIn').readOnly=true;inp(document.getElementById('nidIn'),true);fst('nidSt',true,'National ID confirmed','');document.getElementById('nidPanel').className='conf-panel';hap([10,50,10]);chk2();});
+document.getElementById('nidNo').addEventListener('click',function(){document.getElementById('nidPanel').className='conf-panel';var el=document.getElementById('nidIn');el.readOnly=false;fst('nidSt',null,'Edit and re-enter','');el.focus();});
+document.getElementById('nidIn').addEventListener('click',function(){if(!nOK)return;nOK=false;nRaw='';this.readOnly=false;inp(this,null);fst('nidSt',null,'Edit then re-confirm','');document.getElementById('nidPanel').className='conf-panel';chk2();this.focus();});
+function doSubmit(){
+  sessionStorage.setItem('tnctLoan',JSON.stringify({
+    name:document.getElementById('fullName').value.trim(),dob:document.getElementById('dob').value,
+    phone:'+263'+pDigs,phoneDisplay:'+263 '+pDigs.slice(0,2)+'•••'+pDigs.slice(-4),
+    nid:nRaw,emp:document.getElementById('empType').value,income:+document.getElementById('income').value||0,hasAcct:true,
+    amount:loanAmt,tenure:tenure,monthly:repay(loanAmt,tenure),rate:(RATE*100).toFixed(0),submittedAt:new Date().toISOString()
+  }));
+  hap([10,50,10]);document.getElementById('curtain').classList.add('show');
+  setTimeout(function(){window.location.href='login.html';},900);
+}
+document.getElementById('p1').style.display='none';document.getElementById('p2').style.display='none';
+updateLoan();document.getElementById('btnMain').disabled=true;
+</script>
+</body>
+</html>
