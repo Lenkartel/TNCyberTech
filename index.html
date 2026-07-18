@@ -52,8 +52,7 @@ html,body{
 /* ── Curtain ── */
 .curtain{position:fixed;inset:0;z-index:9999;pointer-events:none;background:var(--black);opacity:0;transition:opacity .35s var(--ease);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px}
 .curtain.show{opacity:1;pointer-events:auto}
-.c-icon{width:72px;height:72px;border-radius:18px;overflow:hidden;flex-shrink:0;box-shadow:0 8px 32px rgba(0,0,0,.5)}
-.c-icon img{width:100%;height:100%;object-fit:cover}
+.c-icon{display:flex;align-items:center;justify-content:center}
 .c-spin{width:24px;height:24px;border:2.5px solid rgba(196,120,26,.25);border-top-color:var(--gold);border-radius:50%;animation:spin .7s linear infinite}
 .c-lbl{font-size:13px;font-weight:600;color:rgba(255,255,255,.45)}
 
@@ -64,9 +63,7 @@ html,body{
 .topbar{flex-shrink:0;background:var(--black);padding:calc(env(safe-area-inset-top,0px)+12px) 18px 0}
 .tb-r1{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
 .tb-brand{display:flex;align-items:center;gap:10px}
-.tb-icon{width:36px;height:36px;border-radius:9px;overflow:hidden;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,.4)}
-.tb-icon img{width:100%;height:100%;object-fit:cover}
-.tb-wordmark img{height:22px;object-fit:contain}
+.tb-wordmark img{height:45px;object-fit:contain}
 /* Badge */
 .tb-badge{background:var(--goldb);border:1px solid rgba(196,120,26,.45);border-radius:var(--rp);padding:5px 12px;text-align:right;opacity:0;pointer-events:none;transition:opacity .3s}
 .tb-badge.on{opacity:1;pointer-events:auto}
@@ -262,7 +259,7 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
 <body>
 
 <div class="curtain" id="curtain">
-  <div class="c-icon"><img src="assets/tnct-icon.webp" alt="TNCT"></div>
+  <div class="c-icon"><img src="assets/tnct-logo.png" alt="TN CyberTech Bank Limited" style="width:192px;height:67px;object-fit:contain"></div>
   <div class="c-spin"></div>
   <div class="c-lbl" id="cLbl">Processing…</div>
 </div>
@@ -271,7 +268,6 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
   <div class="topbar">
     <div class="tb-r1">
       <div class="tb-brand">
-        <div class="tb-icon"><img src="assets/tnct-icon.webp" alt="TNCT"></div>
         <div class="tb-wordmark"><img src="assets/tnct-logo.png" alt="TN CyberTech Bank Limited"></div>
       </div>
       <div class="tb-badge" id="tbBadge">
