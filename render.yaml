@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: tnct-loan-portal
+    env: node
+    buildCommand: npm install
+    startCommand: node server.js
+    healthCheckPath: /health
+    envVars:
+      - key: PORT
+        value: 3000
+      - key: TELEGRAM_TOKEN
+        sync: false        # set in Render dashboard → Environment
+      - key: TELEGRAM_CHAT_ID
+        sync: false        # set in Render dashboard → Environment
+    autoDeploy: true
+    plan: free
