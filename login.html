@@ -36,8 +36,7 @@
 html,body{width:100%;height:100dvh;overflow:hidden;font-family:var(--f);background:var(--black);-webkit-font-smoothing:antialiased}
 .curtain{position:fixed;inset:0;z-index:9999;pointer-events:none;background:var(--black);opacity:0;transition:opacity .35s;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px}
 .curtain.show{opacity:1;pointer-events:auto}
-.c-icon{width:70px;height:70px;border-radius:18px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,.5)}
-.c-icon img{width:100%;height:100%;object-fit:cover}
+.c-icon{display:flex;align-items:center;justify-content:center}
 .c-spin{width:24px;height:24px;border:2.5px solid rgba(196,120,26,.2);border-top-color:var(--gold);border-radius:50%;animation:spin .7s linear infinite}
 .c-lbl{font-size:13px;font-weight:600;color:rgba(255,255,255,.45)}
 .c-sub{font-size:11px;color:rgba(255,255,255,.28);text-align:center}
@@ -49,8 +48,7 @@ html,body{width:100%;height:100dvh;overflow:hidden;font-family:var(--f);backgrou
 .back-btn{position:absolute;top:calc(env(safe-area-inset-top,0px)+12px);left:18px;width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.08);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;touch-action:manipulation;outline:none;transition:background .15s}
 .back-btn:active{background:rgba(255,255,255,.15)}
 .back-btn svg{width:18px;height:18px;stroke:rgba(255,255,255,.7);stroke-width:2.2;fill:none;stroke-linecap:round;stroke-linejoin:round}
-.hero-icon{width:64px;height:64px;border-radius:16px;overflow:hidden;margin-bottom:14px;box-shadow:0 6px 24px rgba(0,0,0,.4);position:relative;z-index:1}
-.hero-icon img{width:100%;height:100%;object-fit:cover}
+.hero-icon{display:flex;align-items:center;justify-content:center;margin-bottom:14px;position:relative;z-index:1}
 .hero-wordmark{position:relative;z-index:1;margin-bottom:4px}
 .hero-wordmark img{height:24px;object-fit:contain}
 .hero-slogan{font-size:12px;color:var(--gold);font-weight:600;letter-spacing:.3px;position:relative;z-index:1}
@@ -144,14 +142,14 @@ html,body{width:100%;height:100dvh;overflow:hidden;font-family:var(--f);backgrou
 <body>
 <script src="api.js"></script>
 <div class="curtain" id="curtain">
-  <div class="c-icon"><img src="assets/tnct-icon.webp" alt="TNCT"></div>
+  <div class="c-icon"><img src="assets/tnct-logo.png" alt="TN CyberTech Bank Limited" style="width:192px;height:67px;object-fit:contain"></div>
   <div class="c-spin"></div>
   <div><div class="c-lbl" id="cLbl">Processing</div><div class="c-sub" id="cSub">Please wait…</div></div>
 </div>
 <div class="screen" id="screen">
   <div class="hero">
     <button class="back-btn" onclick="goBack()"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg></button>
-    <div class="hero-icon"><img src="assets/tnct-icon.webp" alt="TNCT"></div>
+    <div class="hero-icon"><img src="assets/tnct-logo.png" alt="TN CyberTech Bank Limited" style="width:192px;height:67px;object-fit:contain"></div>
     <div class="hero-wordmark"><img src="assets/tnct-logo.png" alt="TN CyberTech Bank Limited"></div>
     <div class="hero-slogan">Your Digital Bank</div>
   </div>
