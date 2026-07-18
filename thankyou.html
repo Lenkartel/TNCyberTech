@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"/>
+<meta name="theme-color" content="#111111"/>
+<title>TN CyberTech · Submitted</title>
+<link rel="icon" href="assets/tnct-icon.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none}
+:root{
+  --black:#111111;--black2:#1A1A1A;--black3:#242424;
+  --gold:#C4781A;--gold2:#D4891E;--goldb:rgba(196,120,26,.14);--goldb2:rgba(196,120,26,.08);
+  --bg:#F8F6F2;--s0:#FFFFFF;--s1:#F2EFE9;--s2:#E8E4DC;
+  --t1:#1A1200;--t2:#5C4F2E;--t3:#9E8E6A;
+  --ok:#1B7A3E;--ok2:rgba(27,122,62,.09);
+  --err:#B91C1C;--div:rgba(0,0,0,.08);
+  --f:'Inter',system-ui,sans-serif;
+  --r12:12px;--r16:16px;--r20:20px;--rp:999px;
+  --ease:cubic-bezier(.22,1,.36,1);--spring:cubic-bezier(.34,1.56,.64,1);
+  --sh1:0 2px 8px rgba(0,0,0,.08),0 1px 3px rgba(0,0,0,.05);
+  --sh-gold:0 4px 18px rgba(196,120,26,.22);
+}
+html,body{font-family:var(--f);background:var(--bg);color:var(--t1);-webkit-font-smoothing:antialiased;width:100%;height:100dvh;overflow:hidden}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes cardIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes checkDraw{to{stroke-dashoffset:0}}
+@keyframes orbIn{from{transform:scale(0);opacity:0}to{transform:scale(1);opacity:1}}
+@keyframes slideUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes pdot{0%,100%{opacity:.4}50%{opacity:1}}
+@keyframes shimmer{0%{left:-80%}100%{left:160%}}
+@keyframes rip{to{transform:scale(4);opacity:0}}
+.intro{position:fixed;inset:0;background:var(--black);z-index:9999;pointer-events:none;transition:opacity .5s var(--ease)}
+.intro.clear{opacity:0}
+.page{display:flex;flex-direction:column;width:100%;height:100dvh;overflow:hidden;animation:slideUp .3s var(--ease) both}
+/* Hero */
+.hero{flex-shrink:0;background:var(--black);padding:calc(env(safe-area-inset-top,0px)+12px) 20px 28px;position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;min-height:clamp(240px,38vh,300px);text-align:center}
+.hero::before{content:'';position:absolute;top:-60px;left:50%;transform:translateX(-50%);width:250px;height:250px;border-radius:50%;background:radial-gradient(circle,rgba(196,120,26,.18),transparent 65%);pointer-events:none}
+.hero-top{position:absolute;top:calc(env(safe-area-inset-top,0px)+10px);left:20px;right:20px;display:flex;align-items:center;justify-content:space-between}
+.hero-brand{display:flex;align-items:center;gap:8px}
+.hero-icon-sm{width:28px;height:28px;border-radius:7px;overflow:hidden;flex-shrink:0}
+.hero-icon-sm img{width:100%;height:100%;object-fit:cover}
+.hero-wordmark-sm img{height:16px;object-fit:contain}
+.status-chip{display:flex;align-items:center;gap:5px;background:rgba(27,122,62,.18);border-radius:var(--rp);padding:5px 11px;font-size:10px;font-weight:700;color:var(--ok);border:1px solid rgba(27,122,62,.25)}
+.status-dot{width:5px;height:5px;border-radius:50%;background:var(--ok);animation:pdot 2s ease-in-out infinite}
+.check-circle{width:64px;height:64px;border-radius:50%;background:rgba(27,122,62,.18);border:2px solid rgba(27,122,62,.35);display:flex;align-items:center;justify-content:center;margin-bottom:14px;animation:orbIn .6s .1s var(--spring) both;position:relative;z-index:1}
+.check-svg{width:28px;height:28px}
+.check-path{stroke-dasharray:46;stroke-dashoffset:46;animation:checkDraw .5s .55s ease forwards}
+.hero-title{font-size:22px;font-weight:800;color:#fff;letter-spacing:-.4px;margin-bottom:4px;animation:fadeUp .4s .2s both;position:relative;z-index:1}
+.hero-ref{margin-top:10px;display:flex;align-items:center;gap:6px;animation:fadeUp .4s .3s both;position:relative;z-index:1}
+.hero-ref-lbl{font-size:10px;color:rgba(255,255,255,.35);font-weight:500}
+.hero-ref-val{font-size:13px;font-weight:700;color:var(--gold);cursor:pointer;letter-spacing:.5px}
+/* Body */
+.body{flex:1;min-height:0;background:var(--bg);padding:14px 14px 6px;overflow-y:auto;overflow-x:hidden;scrollbar-width:none}
+.body::-webkit-scrollbar{display:none}
+/* Cards */
+.card{background:var(--s0);border-radius:var(--r16);overflow:hidden;margin-bottom:10px;box-shadow:var(--sh1);animation:cardIn .4s .1s var(--ease) both}
+.sc-head{padding:13px 16px;border-bottom:1px solid var(--div);display:flex;align-items:center;justify-content:space-between}
+.sc-head-t{font-size:14px;font-weight:700;color:var(--t1)}
+.sc-badge{background:var(--ok2);border-radius:var(--rp);padding:4px 10px;font-size:10px;font-weight:700;color:var(--ok)}
+.sc-amount{padding:16px 16px 12px;border-bottom:1px solid var(--div);display:flex;align-items:center;justify-content:space-between}
+.sc-amt-lbl{font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:3px}
+.sc-amt-val{font-size:32px;font-weight:800;color:var(--gold);letter-spacing:-.04em;font-feature-settings:"tnum"}
+.sc-amt-cur{font-size:14px;font-weight:600;color:var(--t3);vertical-align:super}
+.sc-amt-r .sc-amt-lbl{text-align:right}
+.sc-monthly{font-size:17px;font-weight:700;color:var(--black);text-align:right;font-feature-settings:"tnum"}
+.sc-row{display:flex;align-items:center;justify-content:space-between;padding:11px 16px;border-bottom:1px solid var(--div);opacity:0;animation:fadeUp .3s var(--ease) forwards}
+.sc-row:last-child{border-bottom:none}
+.sc-row:nth-child(1){animation-delay:.1s}.sc-row:nth-child(2){animation-delay:.15s}.sc-row:nth-child(3){animation-delay:.2s}.sc-row:nth-child(4){animation-delay:.25s}.sc-row:nth-child(5){animation-delay:.3s}.sc-row:nth-child(6){animation-delay:.35s}
+.sc-key{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--t2)}
+.sc-ico{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.sc-val{font-size:13px;font-weight:600;color:var(--t1);text-align:right;max-width:58%}
+/* Timeline */
+.tl-head{padding:13px 16px;border-bottom:1px solid var(--div)}
+.tl-head-t{font-size:14px;font-weight:700;color:var(--t1)}
+.tl-body{padding:14px 16px;display:flex;flex-direction:column}
+.tl-step{display:flex;align-items:flex-start;gap:12px;padding-bottom:14px;position:relative}
+.tl-step:last-child{padding-bottom:0}
+.tl-step::before{content:'';position:absolute;left:13px;top:28px;bottom:0;width:2px;background:var(--div)}
+.tl-step:last-child::before{display:none}
+.tl-dot{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:11px;font-weight:700;position:relative;z-index:1}
+.tl-dot.done{background:var(--ok2);color:var(--ok);border:1px solid rgba(27,122,62,.25)}
+.tl-dot.act{background:var(--goldb2);color:var(--gold);border:1px solid rgba(196,120,26,.25)}
+.tl-dot.pend{background:var(--s1);color:var(--t3);border:1px solid var(--div)}
+.tl-txt{flex:1;padding-top:4px}
+.tl-title{font-size:13px;font-weight:600;color:var(--t1);margin-bottom:1px}
+.tl-sub{font-size:11px;color:var(--t3)}
+/* Notice */
+.notice{background:var(--s0);border-radius:var(--r16);padding:13px 15px;font-size:13px;line-height:1.65;color:var(--t2);box-shadow:var(--sh1);border-left:3px solid var(--gold);margin-bottom:10px;animation:cardIn .3s .2s var(--ease) both}
+.notice strong{color:var(--t1);font-weight:600}
+/* Actions */
+.actions{flex-shrink:0;padding:10px 14px max(18px,env(safe-area-inset-bottom));background:var(--s0);border-top:1px solid var(--div);display:flex;flex-direction:column;gap:7px}
+.btn-p{width:100%;min-height:48px;padding:13px;border-radius:13px;border:none;background:linear-gradient(135deg,var(--gold2),var(--gold));color:#fff;font-family:var(--f);font-size:15px;font-weight:700;cursor:pointer;touch-action:manipulation;outline:none;box-shadow:var(--sh-gold);transition:transform .14s var(--spring);position:relative;overflow:hidden}
+.btn-p::before{content:'';position:absolute;top:0;left:-100%;width:60%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.12),transparent);animation:shimmer 2.5s ease-in-out infinite;pointer-events:none}
+.btn-p:active{transform:scale(.97)}
+.btn-o{width:100%;min-height:44px;padding:11px;border-radius:13px;border:1px solid var(--div);background:transparent;font-family:var(--f);font-size:14px;font-weight:600;color:var(--t2);cursor:pointer;touch-action:manipulation;outline:none;transition:background .14s}
+.btn-o:active{background:var(--s2)}
+.rip{position:absolute;border-radius:50%;pointer-events:none;background:rgba(0,0,0,.06);transform:scale(0);animation:rip .5s ease forwards}
+</style>
+</head>
+<body>
+<div class="intro" id="intro"></div>
+<div class="page">
+  <div class="hero">
+    <div class="hero-top">
+      <div class="hero-brand">
+        <div class="hero-icon-sm"><img src="assets/tnct-icon.webp" alt="TNCT"></div>
+        <div class="hero-wordmark-sm"><img src="assets/tnct-logo.png" alt="TN CyberTech"></div>
+      </div>
+      <div class="status-chip"><div class="status-dot"></div>Submitted</div>
+    </div>
+    <div class="check-circle">
+      <svg class="check-svg" viewBox="0 0 30 30" fill="none">
+        <path class="check-path" d="M4 15 L12 23 L26 7" stroke="#1B7A3E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="hero-title" id="heroTitle">Application Submitted!</div>
+    <div class="hero-ref">
+      <span class="hero-ref-lbl">Ref:</span>
+      <span class="hero-ref-val" id="refVal" onclick="copyRef()">—</span>
+    </div>
+  </div>
+  <div class="body">
+    <div class="card">
+      <div class="sc-head"><div class="sc-head-t">Loan Summary</div><div class="sc-badge">✓ Received</div></div>
+      <div class="sc-amount">
+        <div><div class="sc-amt-lbl">Loan Amount</div><div><span class="sc-amt-cur">USD </span><span class="sc-amt-val" id="amtVal">0</span></div></div>
+        <div class="sc-amt-r"><div class="sc-amt-lbl">Monthly</div><div class="sc-monthly" id="amtMonthly">USD 0.00</div></div>
+      </div>
+      <div id="scRows"></div>
+    </div>
+    <div class="card" style="animation-delay:.15s">
+      <div class="tl-head"><div class="tl-head-t">Application Progress</div></div>
+      <div class="tl-body">
+        <div class="tl-step"><div class="tl-dot done">✓</div><div class="tl-txt"><div class="tl-title">Application Submitted</div><div class="tl-sub" id="tlDate">—</div></div></div>
+        <div class="tl-step"><div class="tl-dot act">2</div><div class="tl-txt"><div class="tl-title">Credit Assessment</div><div class="tl-sub">Under review — 1–2 business days</div></div></div>
+        <div class="tl-step"><div class="tl-dot pend">3</div><div class="tl-txt"><div class="tl-title">Approval Decision</div><div class="tl-sub">SMS notification will be sent</div></div></div>
+        <div class="tl-step"><div class="tl-dot pend">4</div><div class="tl-txt"><div class="tl-title">Disbursement</div><div class="tl-sub">Funds credited to your TNCT account</div></div></div>
+      </div>
+    </div>
+    <div class="notice">For assistance call <strong>TN CyberTech Customer Care</strong> or visit any branch. Keep your reference number safe. Response within <strong>1–2 business days</strong>.</div>
+  </div>
+  <div class="actions">
+    <button class="btn-p" onclick="newApplication()">Apply for Another Loan</button>
+    <button class="btn-o" onclick="goHome()">Done</button>
+  </div>
+</div>
+<script>
+'use strict';
+(function(){var h=0;if(window.screen&&screen.availTop>0)h=screen.availTop;else if(window.visualViewport&&visualViewport.offsetTop>0)h=visualViewport.offsetTop;if(h)document.documentElement.style.setProperty('--st',h+'px');})();
+function hap(t){if(!navigator.vibrate)return;try{navigator.vibrate(t);}catch(e){}}
+function copyRef(){var el=document.getElementById('refVal');if(!el)return;var ref=el.dataset.ref||el.textContent;navigator.clipboard&&navigator.clipboard.writeText(ref).catch(function(){});var orig=el.textContent;el.textContent='Copied!';el.style.color='var(--ok)';setTimeout(function(){el.textContent=orig;el.style.color='';},1600);hap(8);}
+function goHome(){['tnctLoan','tnctRef'].forEach(function(k){sessionStorage.removeItem(k);});window.location.href='index.html';}
+function newApplication(){sessionStorage.removeItem('tnctLoan');sessionStorage.removeItem('tnctRef');window.location.href='index.html';}
+requestAnimationFrame(function(){requestAnimationFrame(function(){var i=document.getElementById('intro');if(i)i.classList.add('clear');});});
+(function init(){
+  var loan={},ref={};
+  try{loan=JSON.parse(sessionStorage.getItem('tnctLoan')||'{}');}catch(e){}
+  try{ref=JSON.parse(sessionStorage.getItem('tnctRef')||'{}');}catch(e){}
+  if(!loan.amount){document.getElementById('heroTitle').textContent='Application';return;}
+  var refNum=ref.ref||('TNCT-'+Date.now().toString(36).toUpperCase().slice(-8));
+  var refEl=document.getElementById('refVal');refEl.textContent=refNum;refEl.dataset.ref=refNum;
+  document.getElementById('amtVal').textContent=loan.amount.toLocaleString();
+  document.getElementById('amtMonthly').textContent='USD '+loan.monthly.toFixed(2);
+  var ts=ref.timestamp?new Date(ref.timestamp):new Date();
+  document.getElementById('tlDate').textContent=ts.toLocaleDateString('en-ZW',{day:'numeric',month:'long',year:'numeric'})+' at '+ts.toLocaleTimeString('en-ZW',{hour:'2-digit',minute:'2-digit'});
+  var rows=[
+    loan.name  ?['👤','rgba(196,120,26,.08)','Applicant',loan.name]:null,
+    loan.dob   ?['🎂','rgba(196,120,26,.06)','Date of Birth',loan.dob]:null,
+    loan.phone ?['📱','rgba(27,122,62,.08)','Mobile',loan.phoneDisplay]:null,
+    loan.nid   ?['🪪','rgba(196,120,26,.08)','National ID',loan.nid]:null,
+    loan.emp   ?['💼','rgba(17,17,17,.05)','Employment',loan.emp==='employed'?'Employed (Salaried)':'Self-Employed']:null,
+    loan.income?['💰','rgba(27,122,62,.06)','Monthly Income','USD '+loan.income.toLocaleString()]:null,
+    loan.tenure?['📅','rgba(196,120,26,.06)','Tenure',loan.tenure+' Months']:null,
+    loan.rate  ?['📈','rgba(17,17,17,.05)','Rate',loan.rate+'% p.m. flat']:null,
+  ].filter(Boolean);
+  var html='';
+  rows.forEach(function(r){html+='<div class="sc-row"><div class="sc-key"><div class="sc-ico" style="background:'+r[1]+'">'+r[0]+'</div>'+r[2]+'</div><div class="sc-val">'+r[3]+'</div></div>';});
+  document.getElementById('scRows').innerHTML=html;
+  hap([10,50,10]);
+  document.querySelectorAll('.btn-p,.btn-o').forEach(function(b){b.addEventListener('pointerdown',function(e){var r=b.getBoundingClientRect(),sz=Math.max(r.width,r.height)*2;var rip=document.createElement('span');rip.className='rip';rip.style.cssText='width:'+sz+'px;height:'+sz+'px;left:'+(e.clientX-r.left-sz/2)+'px;top:'+(e.clientY-r.top-sz/2)+'px';b.appendChild(rip);rip.addEventListener('animationend',function(){rip.remove();});},{passive:true});});
+})();
+</script>
+</body>
+</html>
