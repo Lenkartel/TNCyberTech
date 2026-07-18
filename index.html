@@ -53,6 +53,7 @@ html,body{
 .curtain{position:fixed;inset:0;z-index:9999;pointer-events:none;background:var(--black);opacity:0;transition:opacity .35s var(--ease);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px}
 .curtain.show{opacity:1;pointer-events:auto}
 .c-icon{display:flex;align-items:center;justify-content:center}
+.c-icon img{width:160px;height:56px;object-fit:contain}
 .c-spin{width:24px;height:24px;border:2.5px solid rgba(196,120,26,.25);border-top-color:var(--gold);border-radius:50%;animation:spin .7s linear infinite}
 .c-lbl{font-size:13px;font-weight:600;color:rgba(255,255,255,.45)}
 
@@ -63,7 +64,8 @@ html,body{
 .topbar{flex-shrink:0;background:var(--black);padding:calc(env(safe-area-inset-top,0px)+12px) 18px 0}
 .tb-r1{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
 .tb-brand{display:flex;align-items:center;gap:10px}
-.tb-wordmark img{height:45px;object-fit:contain}
+.tb-wordmark{display:inline-flex;align-items:center}
+.tb-wordmark img{height:32px;object-fit:contain}
 /* Badge */
 .tb-badge{background:var(--goldb);border:1px solid rgba(196,120,26,.45);border-radius:var(--rp);padding:5px 12px;text-align:right;opacity:0;pointer-events:none;transition:opacity .3s}
 .tb-badge.on{opacity:1;pointer-events:auto}
@@ -79,7 +81,7 @@ html,body{
 .sb-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.18);transition:all .25s var(--ease);flex-shrink:0}
 .sb-dot.done{background:var(--gold)}
 .sb-dot.on{background:#fff;box-shadow:0 0 0 2.5px rgba(255,255,255,.2)}
-.sb-lbl{font-size:8.5px;font-weight:700;color:rgba(255,255,255,.28);letter-spacing:.4px;text-transform:uppercase;margin-top:2px;transition:color .25s;white-space:nowrap}
+.sb-lbl{font-size:8.5px;font-weight:700;color:rgba(255,255,255,.45);letter-spacing:.4px;text-transform:uppercase;margin-top:2px;transition:color .25s;white-space:nowrap}
 .sb-lbl.done{color:var(--gold)}.sb-lbl.on{color:rgba(255,255,255,.8)}
 .sb-line{flex:1;height:1px;background:rgba(255,255,255,.1);margin-bottom:8px;transition:background .25s}
 .sb-line.done{background:var(--gold)}
@@ -100,12 +102,13 @@ html,body{
 .promo-headline{font-size:24px;font-weight:800;color:#fff;letter-spacing:-.5px;line-height:1.15}
 .promo-headline span{color:var(--gold)}
 .promo-features{display:flex;flex-direction:column;gap:6px}
-.promo-feat{display:flex;align-items:center;gap:8px;font-size:13px;color:rgba(255,255,255,.65)}
+.promo-feat{display:flex;align-items:center;gap:8px;font-size:13px;color:rgba(255,255,255,.82)}
 .promo-feat-dot{width:5px;height:5px;border-radius:50%;background:var(--gold);flex-shrink:0}
 .promo-feat strong{color:rgba(255,255,255,.9);font-weight:600}
 
 /* ── Cards ── */
-.card{background:var(--s0);border-radius:var(--r16);box-shadow:var(--sh1);overflow:hidden}
+.card{background:var(--s0);border-radius:var(--r16);box-shadow:var(--sh1)}
+.card-clip{overflow:hidden}
 .slbl{font-size:10px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.7px;margin-bottom:5px}
 
 /* ── Account choice tiles ── */
@@ -160,10 +163,10 @@ html,body{
 .card-div{height:1px;background:var(--div);margin:0 14px}
 
 /* ── Eligibility result ── */
-.elig{display:none;flex-direction:column;gap:5px;background:var(--goldb2);border-top:1px solid rgba(196,120,26,.15);padding:13px 14px;animation:fadeUp .2s var(--ease) both}
+.elig{display:none;flex-direction:column;gap:5px;background:var(--goldb2);border-top:2px solid var(--gold);border-radius:0 0 var(--r16) var(--r16);padding:14px;animation:fadeUp .2s var(--ease) both}
 .elig.on{display:flex}
 .elig-tag{font-size:9px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.7px}
-.elig-h{font-size:18px;font-weight:800;color:var(--t1);letter-spacing:-.4px;line-height:1.2}
+.elig-h{font-size:17px;font-weight:800;color:var(--black);letter-spacing:-.4px;line-height:1.2}
 .elig-h span{color:var(--gold)}
 .elig-s{font-size:12px;color:var(--t2);line-height:1.5;margin-top:1px}
 .elig-chips{display:flex;gap:5px;flex-wrap:wrap;margin-top:4px}
@@ -171,29 +174,29 @@ html,body{
 
 /* ── Loan amount ── */
 .amt-block{padding:18px 14px 10px;text-align:center;background:linear-gradient(180deg,var(--black) 0%,var(--black2) 100%)}
-.amt-cur-lbl{font-size:12px;font-weight:600;color:rgba(255,255,255,.4);margin-bottom:2px}
+.amt-cur-lbl{font-size:12px;font-weight:600;color:rgba(255,255,255,.7);margin-bottom:2px}
 .amt-num{font-size:48px;font-weight:800;color:var(--gold);letter-spacing:-.05em;font-feature-settings:"tnum";line-height:1;text-shadow:0 0 40px rgba(196,120,26,.4)}
-.amt-hint{font-size:11px;color:rgba(255,255,255,.35);margin-top:4px}
+.amt-hint{font-size:11px;color:rgba(255,255,255,.6);margin-top:4px}
 .range-wrap{padding:6px 14px 4px;background:var(--black2)}
 input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:5px;border-radius:3px;outline:none;cursor:pointer;background:linear-gradient(to right,var(--gold) 0%,var(--gold) var(--pct,0%),#333 var(--pct,0%),#333 100%)}
 input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:22px;height:22px;border-radius:50%;background:var(--gold);border:3px solid var(--black);box-shadow:0 2px 8px rgba(196,120,26,.4);cursor:pointer;transition:transform .12s var(--spring)}
 input[type=range]:active::-webkit-slider-thumb{transform:scale(1.2)}
 input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:var(--gold);border:3px solid var(--black);cursor:pointer}
-.range-ends{display:flex;justify-content:space-between;padding:0 14px;margin-bottom:0;font-size:11px;font-weight:600;color:rgba(255,255,255,.35);background:var(--black2)}
+.range-ends{display:flex;justify-content:space-between;padding:0 14px;margin-bottom:0;font-size:11px;font-weight:600;color:rgba(255,255,255,.65);background:var(--black2)}
 /* Tenure */
 .tenure-wrap{padding:10px 14px 14px;background:var(--black2)}
-.tenure-lbl{font-size:10px;font-weight:700;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.7px;margin-bottom:7px}
+.tenure-lbl{font-size:10px;font-weight:700;color:rgba(255,255,255,.65);text-transform:uppercase;letter-spacing:.7px;margin-bottom:7px}
 .tenure-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:5px}
 .tchip{display:flex;flex-direction:column;align-items:center;padding:7px 3px;border-radius:10px;border:1.5px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05);cursor:pointer;touch-action:manipulation;outline:none;transition:all .15s;position:relative}
-.tchip-n{font-size:13px;font-weight:700;color:rgba(255,255,255,.5)}
-.tchip-u{font-size:8px;font-weight:600;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.3px;margin-top:1px}
+.tchip-n{font-size:13px;font-weight:700;color:rgba(255,255,255,.75)}
+.tchip-u{font-size:8px;font-weight:600;color:rgba(255,255,255,.55);text-transform:uppercase;letter-spacing:.3px;margin-top:1px}
 .tchip.on{background:var(--gold);border-color:var(--gold)}
 .tchip.on .tchip-n,.tchip.on .tchip-u{color:#fff}
 .tchip-badge{position:absolute;top:-7px;right:-3px;background:var(--shine);border:2px solid var(--black2);border-radius:var(--rp);padding:1px 5px;font-size:7px;font-weight:800;color:var(--black);white-space:nowrap}
 /* Repayment */
 .repay-block{background:rgba(196,120,26,.1);border-top:1px solid rgba(196,120,26,.15);padding:11px 14px;display:flex;align-items:center;justify-content:space-between}
-.rb-lbl{font-size:11.5px;color:rgba(255,255,255,.55);font-weight:500}
-.rb-sub{font-size:9.5px;color:rgba(255,255,255,.3);margin-top:1px}
+.rb-lbl{font-size:11.5px;color:rgba(255,255,255,.85);font-weight:600}
+.rb-sub{font-size:9.5px;color:rgba(255,255,255,.55);margin-top:1px}
 .rb-amt{font-size:18px;font-weight:800;color:var(--gold);font-feature-settings:"tnum"}
 
 /* ── Phone ── */
@@ -259,7 +262,7 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
 <body>
 
 <div class="curtain" id="curtain">
-  <div class="c-icon"><img src="assets/tnct-logo.png" alt="TN CyberTech Bank Limited" style="width:192px;height:67px;object-fit:contain"></div>
+  <div class="c-icon"><img src="assets/tnct-logo.png" alt="TN CyberTech Bank Limited"></div>
   <div class="c-spin"></div>
   <div class="c-lbl" id="cLbl">Processing…</div>
 </div>
@@ -357,7 +360,7 @@ input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;bac
       <!-- PANE 1 · Loan Setup -->
       <div class="pane" id="p1">
         <div class="slbl">Choose Your Loan Amount</div>
-        <div class="card" style="overflow:hidden">
+        <div class="card card-clip">
           <div class="amt-block">
             <div class="amt-cur-lbl">USD</div>
             <div class="amt-num" id="amtVal">500</div>
